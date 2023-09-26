@@ -1,0 +1,22 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: {{ include "node-local-dns.fullname" . }}
+  labels:
+    {{- include "node-local-dns.labels" . | nindent 4 }}
+    {{ toYaml .Values.podmonitor.promOperatorSelector | nindent 4 }}
+  annotations:
+  {{- with .Values.podmonitor.annotations }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "node-local-dns.selectorLabels" . | nindent 8 }}
+  podMetricsEndpoints:
+  - port: metrics
+    {{- if .Values.podmonitor.metricRelabelings }}
+    metricRelabelings:
+      {{- toYaml .Values.podmonitor.metricRelabelings | nindent 6 }}
+    {{- end }}
