@@ -6,8 +6,8 @@ metadata:
   labels:
     {{- include "node-local-dns.labels" . | nindent 4 }}
     {{ toYaml .Values.podmonitor.promOperatorSelector | nindent 4 }}
-  annotations:
   {{- with .Values.podmonitor.annotations }}
+  annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
