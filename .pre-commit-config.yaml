@@ -1,0 +1,11 @@
+repos:
+  - repo: https://github.com/norwoodj/helm-docs
+    rev: v1.11.3
+    hooks:
+      - id: helm-docs
+        args:
+          # Make the tool search for charts only under the `example-charts` directory
+          - --chart-search-root=charts/node-local-dns/
+
+          # The `./` makes it relative to the chart-search-root set above
+          - --template-files=./README.md.gotmpl

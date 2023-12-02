@@ -1,27 +1,100 @@
-# NodeLocal DNSCache Helm chart
+# node-local-dns
 
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+NodeLocal DNS Cache helm chart
 
-## Helm Chart Repository
+![Version: 1.5.0](https://img.shields.io/badge/Version-1.5.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.22.24](https://img.shields.io/badge/AppVersion-1.22.24-informational?style=flat-square)
 
-```console
-helm repo add k8s-nodelocaldns-helm  https://lablabs.github.io/k8s-nodelocaldns-helm/
-helm install k8s-nodelocaldns-helm/node-local-dns
-```
+[<img src="https://lablabs.io/static/ll-logo.png" width=350px>](https://lablabs.io/)
 
-### Testing
-
-```console
-helm test node-local-dns
-```
-
-## Configuration
+## Installing the Chart
 
 This chart deploys NodeLocal DNSCache Daemon set according to <https://kubernetes.io/docs/tasks/administer-cluster/nodelocaldns/>.
 
 It is designed to work both with iptables and IPVS setup.
 
 Latest available `node-local-dns` image can be found at [node-local-dns google container repository](https://console.cloud.google.com/gcr/images/google-containers/GLOBAL/k8s-dns-node-cache)
+
+## Values
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| affinity | object | `{}` |  |
+| config.localDnsIp | string | `"169.254.20.11"` |  |
+| config.zones.".:53".plugins.cache.denial | object | `{}` |  |
+| config.zones.".:53".plugins.cache.parameters | int | `30` |  |
+| config.zones.".:53".plugins.cache.prefetch | object | `{}` |  |
+| config.zones.".:53".plugins.cache.serve_stale | bool | `false` |  |
+| config.zones.".:53".plugins.cache.success | object | `{}` |  |
+| config.zones.".:53".plugins.debug | bool | `false` |  |
+| config.zones.".:53".plugins.errors | bool | `true` |  |
+| config.zones.".:53".plugins.forward.except | string | `""` |  |
+| config.zones.".:53".plugins.forward.expire | string | `""` |  |
+| config.zones.".:53".plugins.forward.force_tcp | bool | `false` |  |
+| config.zones.".:53".plugins.forward.health_check | string | `""` |  |
+| config.zones.".:53".plugins.forward.max_fails | string | `""` |  |
+| config.zones.".:53".plugins.forward.parameters | string | `"__PILLAR__UPSTREAM__SERVERS__"` |  |
+| config.zones.".:53".plugins.forward.policy | string | `""` |  |
+| config.zones.".:53".plugins.forward.prefer_udp | bool | `false` |  |
+| config.zones.".:53".plugins.health.port | int | `8080` |  |
+| config.zones.".:53".plugins.log.classes | string | `"all"` |  |
+| config.zones.".:53".plugins.log.format | string | `"combined"` |  |
+| config.zones.".:53".plugins.prometheus | bool | `true` |  |
+| config.zones.".:53".plugins.reload | bool | `true` |  |
+| config.zones."in-addr.arpa:53".plugins.cache.parameters | int | `30` |  |
+| config.zones."in-addr.arpa:53".plugins.debug | bool | `false` |  |
+| config.zones."in-addr.arpa:53".plugins.errors | bool | `true` |  |
+| config.zones."in-addr.arpa:53".plugins.forward.force_tcp | bool | `false` |  |
+| config.zones."in-addr.arpa:53".plugins.forward.parameters | string | `"__PILLAR__UPSTREAM__SERVERS__"` |  |
+| config.zones."in-addr.arpa:53".plugins.health.port | int | `8080` |  |
+| config.zones."in-addr.arpa:53".plugins.log.classes | string | `"all"` |  |
+| config.zones."in-addr.arpa:53".plugins.log.format | string | `"combined"` |  |
+| config.zones."in-addr.arpa:53".plugins.prometheus | bool | `true` |  |
+| config.zones."in-addr.arpa:53".plugins.reload | bool | `true` |  |
+| config.zones."ip6.arpa:53".plugins.cache.parameters | int | `30` |  |
+| config.zones."ip6.arpa:53".plugins.debug | bool | `false` |  |
+| config.zones."ip6.arpa:53".plugins.errors | bool | `true` |  |
+| config.zones."ip6.arpa:53".plugins.forward.force_tcp | bool | `false` |  |
+| config.zones."ip6.arpa:53".plugins.forward.parameters | string | `"__PILLAR__UPSTREAM__SERVERS__"` |  |
+| config.zones."ip6.arpa:53".plugins.health.port | int | `8080` |  |
+| config.zones."ip6.arpa:53".plugins.log.classes | string | `"all"` |  |
+| config.zones."ip6.arpa:53".plugins.log.format | string | `"combined"` |  |
+| config.zones."ip6.arpa:53".plugins.prometheus | bool | `true` |  |
+| config.zones."ip6.arpa:53".plugins.reload | bool | `true` |  |
+| image.args.healthPort | int | `8080` |  |
+| image.args.interfaceName | string | `"nodelocaldns"` |  |
+| image.args.quiet | bool | `false` |  |
+| image.args.setupEbtables | bool | `true` |  |
+| image.args.setupIptables | bool | `true` |  |
+| image.args.skipTeardown | bool | `true` |  |
+| image.args.syncInterval | string | `"1ns"` |  |
+| image.args.upstreamSvc | string | `"kube-dns"` |  |
+| image.pullPolicy | string | `"IfNotPresent"` |  |
+| image.repository | string | `"registry.k8s.io/dns/k8s-dns-node-cache"` |  |
+| image.tag | string | `"1.22.24"` |  |
+| imagePullSecrets | list | `[]` |  |
+| metrics.port | int | `9253` |  |
+| metrics.prometheusScrape | string | `"true"` |  |
+| nodeSelector | object | `{}` |  |
+| podAnnotations | object | `{}` |  |
+| podSecurityContext | object | `{}` |  |
+| priorityClassName | string | `"system-node-critical"` |  |
+| readinessProbe | string | `nil` |  |
+| resources.requests.cpu | string | `"30m"` |  |
+| resources.requests.memory | string | `"50Mi"` |  |
+| securityContext.privileged | bool | `true` |  |
+| serviceAccount.annotations | object | `{}` |  |
+| serviceAccount.create | bool | `true` |  |
+| serviceAccount.name | string | `""` |  |
+| tolerations[0].key | string | `"CriticalAddonsOnly"` |  |
+| tolerations[0].operator | string | `"Exists"` |  |
+| tolerations[1].effect | string | `"NoExecute"` |  |
+| tolerations[1].operator | string | `"Exists"` |  |
+| tolerations[2].effect | string | `"NoSchedule"` |  |
+| tolerations[2].operator | string | `"Exists"` |  |
+| updateStrategy.rollingUpdate.maxUnavailable | string | `"10%"` |  |
+| useHostNetwork | bool | `true` |  |
+
+## Additional Information
 
 ### Cilium
 
@@ -60,138 +133,5 @@ As this feature heavily depends on the Cluster DNS implementation, for a [Ranche
 `clusterDNSService` should be `rke2-coredns-rke2-coredns`, and port names,
 `udp-53` and `tcp-53` respectively.
 
-### Values
-
-The following table lists the configurable parameters of the Node-local-dns chart and their default values.
-
-| Parameter                | Description             | Default        |
-| ------------------------ | ----------------------- | -------------- |
-| `image.repository` |  | `"registry.k8s.io/dns/k8s-dns-node-cache"` |
-| `image.pullPolicy` |  | `"IfNotPresent"` |
-| `image.tag` |  | `"1.22.9"` |
-| `image.args.skipTeardown` |  | `true` |
-| `image.args.syncInterval` |  | `"1ns"` |
-| `image.args.interfaceName` |  | `"nodelocaldns"` |
-| `image.args.upstreamSvc` |  | `"kube-dns"` |
-| `image.args.healthPort` | `8080` |
-| `image.args.setupIptables` | `false` |
-| `image.args.setupEbtables` | `false` |
-| `image.args.quiet` | `false` |
-| `imagePullSecrets` |  | `[]` |
-| `config.localDnsIp` |  | `"169.254.20.11"` |
-| `config.cilium.clusterDNSService` | Cluster DNS service name | `"kube-dns"` |
-| `config.cilium.clusterDNSNamespace` | Cluster DNS namespace | `"kube-system"` |
-| `config.cilium.udp.enabled` | Enable UDP port mapping upstream DNS service | `false` |
-| `config.cilium.udp.portName` | UDP port name upstream DNS service | `"dns"` |
-| `config.cilium.tcp.enabled` | Enable TCP port mapping upstream DNS service | `false` |
-| `config.cilium.tcp.portName` | TCP port name upstream DNS service | `"dns-tcp"` |
-| `config.zones` |  | `[{".:53":{"plugins":{"errors":true,"reload":true,"debug":false,"log":{"format":"combined","classes":"all"},"cache":{"parameters":30,"denial":{},"success":{},"prefetch":{},"serve_stale":false},"forward":{"parameters":"__PILLAR__UPSTREAM__SERVERS__","force_tcp":false,"prefer_udp":false,"policy":"","max_fails":"","expire":"","health_check":"","except":""},"prometheus":true,"health":{"port":8080}}}},{"ip6.arpa:53":{"plugins":{"errors":true,"reload":true,"debug":false,"log":{"format":"combined","classes":"all"},"cache":{"parameters":30},"forward":{"parameters":"__PILLAR__UPSTREAM__SERVERS__","force_tcp":false},"prometheus":true,"health":{"port":8080}}}},{"in-addr.arpa:53":{"plugins":{"errors":true,"reload":true,"debug":false,"log":{"format":"combined","classes":"all"},"cache":{"parameters":30},"forward":{"parameters":"__PILLAR__UPSTREAM__SERVERS__","force_tcp":false},"prometheus":true,"health":{"port":8080}}}}]` |
-| `useHostNetwork` |  | `true` |
-| `updateStrategy.rollingUpdate.maxUnavailable` |  | `"10%"` |
-| `priorityClassName` |  | `"system-node-critical"` |
-| `podAnnotations` |  | `{}` |
-| `podSecurityContext` |  | `{}` |
-| `securityContext.privileged` |  | `true` |
-| `readinessProbe` |  | `null` |
-| `serviceAccount.create` |  | `true` |
-| `serviceAccount.annotations` |  | `{}` |
-| `serviceAccount.name` |  | `""` |
-| `nodeSelector` |  | `{}` |
-| `affinity` |  | `{}` |
-| `tolerations` |  | `[{"key": "CriticalAddonsOnly", "operator": "Exists"}, {"effect": "NoExecute", "operator": "Exists"}, {"effect": "NoSchedule", "operator": "Exists"}]` |
-| `resources.requests.cpu` |  | `"30m"` |
-| `resources.requests.memory` |  | `"50Mi"` |
-| `metrics.prometheusScrape` |  | `"true"` |
-| `metrics.port` |  | `9253` |
-
-### Setting upstream DNS service
-
-```yaml
-config:
-  localDnsIp: 169.254.20.11
-  zones:
-    - .:53:
-        plugins:
-          errors: true
-          reload: true
-          debug: false
-          log:
-            format: common
-            classes: all
-          cache:
-            parameters: 30
-            denial: {}
-              # size: 0
-              # ttl: 1
-            success: {}
-              # size: 8192
-              # ttl: 30
-            prefetch: {}
-              # amount: 1
-              # duration: 10m
-              # percentage: 20%
-            serve_stale: false
-          forward:
-            parameters: __PILLAR__UPSTREAM__SERVERS__ # defaults to /etc/resolv.conf
-            force_tcp: false
-            prefer_udp: false
-            policy: "" # random|round_robin|sequential
-            max_fails: "" # 10
-            expire: "" # 10s
-            health_check: "" # 10s
-          prometheus: true
-          health:
-            port: 8080
-```
-
-```yaml
-  Corefile: |
-    __PILLAR__DNS__DOMAIN__:53 {
-        errors
-        cache {
-          success 9984 30
-          denial 9984 5
-        }
-        reload
-        loop
-        bind __PILLAR__LOCAL__DNS__ __PILLAR__DNS__SERVER__
-        forward . __PILLAR__CLUSTER__DNS__ {
-          force_tcp
-        }
-        prometheus :9253
-        health __PILLAR__LOCAL__DNS__:8080
-    }
-    in-addr.arpa:53 {
-        errors
-        cache 30
-        reload
-        loop
-        bind __PILLAR__LOCAL__DNS__ __PILLAR__DNS__SERVER__
-        forward . __PILLAR__CLUSTER__DNS__ {
-          force_tcp
-        }
-        prometheus :9253
-    }
-    ip6.arpa:53 {
-        errors
-        cache 30
-        reload
-        loop
-        bind __PILLAR__LOCAL__DNS__ __PILLAR__DNS__SERVER__
-        forward . __PILLAR__CLUSTER__DNS__ {
-          force_tcp
-        }
-        prometheus :9253
-    }
-    .:53 {
-        errors
-        cache 30
-        reload
-        loop
-        bind __PILLAR__LOCAL__DNS__ __PILLAR__DNS__SERVER__
-        forward . __PILLAR__UPSTREAM__SERVERS__
-        prometheus :9253
-    }
-```
-
-Reference [node-local-dns upstream](https://github.com/kubernetes/kubernetes/blob/master/cluster/addons/dns/nodelocaldns/nodelocaldns.yaml)
+----------------------------------------------
+Autogenerated from chart metadata using [helm-docs v1.11.3](https://github.com/norwoodj/helm-docs/releases/v1.11.3)
