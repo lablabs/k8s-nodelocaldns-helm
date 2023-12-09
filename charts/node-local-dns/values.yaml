@@ -123,3 +123,7 @@ resources:
 metrics:
   prometheusScrape: "true"
   port: 9253
+
+podmonitor:
+  enabled: false
+  metricRelabelings: []

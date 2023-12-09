@@ -52,6 +52,7 @@ The following table lists the configurable parameters of the Node-local-dns char
 | `resources.requests.memory` |  | `"50Mi"` |
 | `metrics.prometheusScrape` |  | `"true"` |
 | `metrics.port` |  | `9253` |
+| `podmonitor.enabled` | `Enable or disable the creation of a PodMonitor resource` | `false` |
 | `podmonitor.metricRelabelings` | `Define metric relabeling configurations for Prometheus` | [] |
 
 ### Setting upstream DNS service
