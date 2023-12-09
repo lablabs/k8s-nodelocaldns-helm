@@ -29,7 +29,9 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       priorityClassName: {{ .Values.priorityClassName }}
+      {{- if not (hasKey .Values.config "cilium") }}
       hostNetwork: {{ .Values.useHostNetwork }}
+      {{- end }}
       dnsPolicy: Default
       containers:
         - name: {{ .Chart.Name }}
@@ -39,16 +41,22 @@ spec:
             - -localip
             - "{{ .Values.config.localDnsIp }}"
             {{- if .Values.image.args.skipTeardown }}
-            - -skipteardown
+            - -skipteardown=true
+            {{- else }}
+            - -skipteardown=false
             {{- end }}
             {{- if .Values.image.args.setupEptables }}
             - -setupeptables
             {{- end }}
             {{- if .Values.image.args.setupInterface }}
-            - -setupinterface
+            - -setupinterface=true
+            {{- else }}
+            - -setupinterface=false
             {{- end }}
             {{- if .Values.image.args.setupIptables }}
-            - -setupiptables
+            - -setupiptables=true
+            {{- else }}
+            - -setupiptables=false
             {{- end }}
             {{- if .Values.image.args.quiet }}
             - -quiet
@@ -65,19 +73,35 @@ spec:
             - /etc/Corefile
             - -syncinterval
             - {{ .Values.image.args.syncInterval }}
+            {{- if .Values.image.args.setupInterface }}
             - -interfacename
             - {{ .Values.image.args.interfaceName }}
+            {{- end }}
             - -metrics-listen-address
             - "0.0.0.0:{{ add .Values.metrics.port 100 }}"
           ports:
             - name: metrics
               containerPort: {{ .Values.metrics.port }}
               protocol: TCP
+          {{- if (hasKey .Values.config "cilium") }}
+          {{- if .Values.config.cilium.udp.enabled }}
+            - name: {{ .Values.config.cilium.udp.portName | default "dns" }}
+              containerPort: 53
+              protocol: UDP
+          {{- end }}
+          {{- if .Values.config.cilium.tcp.enabled }}
+            - name: {{ .Values.config.cilium.tcp.portName | default "dns-tcp" }}
+              containerPort: 53
+              protocol: TCP
+          {{- end }}
+          {{- end }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           livenessProbe:
             httpGet:
+              {{- if not (hasKey .Values.config "cilium") }}
               host: {{ .Values.config.localDnsIp }}
+              {{- end }}
               path: /health
               port: {{ default "8080" .Values.image.args.healthPort }}
             initialDelaySeconds: 60

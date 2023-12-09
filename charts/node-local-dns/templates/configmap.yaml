@@ -9,6 +9,7 @@ data:
   Corefile: |-
     {{- $localDnsIp := .Values.config.localDnsIp -}}
     {{- $metricsPort := .Values.metrics.port -}}
+    {{- $ciliumConfig := ternary true false (hasKey .Values.config "cilium") -}}
 
     {{- range $k, $v := .Values.config.zones }}
     {{ $k }} {
@@ -33,6 +34,25 @@ data:
       {{- if $v.plugins.reload }}
       reload
       {{- end }}
+      {{- if $v.plugins.hosts }}
+      hosts {
+      {{- range $kk, $vv := $v.plugins.hosts.entries }}
+        {{ $vv.ip }} {{ $vv.name }}
+      {{- end }}
+      {{- if $v.plugins.hosts.ttl }}
+        ttl {{ $v.plugins.hosts.ttl }}
+      {{- end }}
+      {{- if $v.plugins.hosts.no_reverse }}
+        no_reverse
+      {{- end }}
+      {{- if $v.plugins.hosts.reload }}
+        reload {{ $v.plugins.hosts.reload | quote }}
+      {{- end }}
+      {{- if $v.plugins.hosts.fallthrough }}
+        fallthrough
+      {{- end }}
+      }
+      {{- end }}
       {{- if $v.plugins.log }}
       log . {{ default "combined" $v.plugins.log.format }} {
         class {{ $v.plugins.log.classes }}
@@ -42,7 +62,11 @@ data:
       debug
       {{- end }}
       loop
+      {{- if not $ciliumConfig }}
       bind {{ $localDnsIp }}
+      {{- else }}
+      bind 0.0.0.0
+      {{- end }}
       forward . {{ $v.plugins.forward.parameters }} {
       {{- if $v.plugins.forward.policy }}
         policy {{ $v.plugins.forward.policy }}
@@ -70,7 +94,11 @@ data:
       prometheus :{{ $metricsPort }}
       {{- end }}
       {{- if $v.plugins.health }}
+      {{- if not $ciliumConfig }}
       health {{ $localDnsIp }}:{{ $v.plugins.health.port }}
+      {{- else }}
+      health
+      {{- end }}
       {{- end }}
     {{- end }}
     }

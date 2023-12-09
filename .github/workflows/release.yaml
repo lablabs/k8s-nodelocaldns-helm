@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-      - feat/*
 
 jobs:
   release:
@@ -21,10 +20,9 @@ jobs:
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
       - name: Install Helm
-        run: |
-          curl -fsSLo get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
-          chmod 700 get_helm.sh
-          ./get_helm.sh
+        uses: azure/setup-helm@v3
+        with:
+          version: v3.12.1
 
       - name: Add dependency chart repos
         run: |
@@ -32,7 +30,7 @@ jobs:
           helm repo add incubator https://charts.helm.sh/incubator
 
       - name: Run chart-releaser
-        uses: helm/chart-releaser-action@v1.5.0
+        uses: helm/chart-releaser-action@v1.6.0
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           CR_SKIP_EXISTING: true
