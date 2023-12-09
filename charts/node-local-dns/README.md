@@ -74,6 +74,8 @@ Latest available `node-local-dns` image can be found at [node-local-dns google c
 | imagePullSecrets | list | `[]` |  |
 | metrics.port | int | `9253` |  |
 | metrics.prometheusScrape | string | `"true"` |  |
+| podmonitor.enabled | bool | `false` | Enable or disable the creation of a PodMonitor resource |
+| podmonitor.metricRelabelings | array | `[]` | Define metric relabeling configurations for Prometheus |
 | nodeSelector | object | `{}` |  |
 | podAnnotations | object | `{}` |  |
 | podSecurityContext | object | `{}` |  |
