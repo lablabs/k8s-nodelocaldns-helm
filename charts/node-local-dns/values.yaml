@@ -10,6 +10,7 @@ image:
     syncInterval: 1ns
     setupIptables: true
     setupEbtables: true
+    setupInterface: false
     quiet: false
     upstreamSvc: kube-dns
 
