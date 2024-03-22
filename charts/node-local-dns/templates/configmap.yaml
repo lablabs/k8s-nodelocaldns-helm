@@ -95,7 +95,11 @@ data:
       {{- end }}
       {{- if $v.plugins.health }}
       {{- if not $ciliumConfig }}
+      {{- if contains ":" $localDnsIp }}
+      health [{{ $localDnsIp }}]:{{ $v.plugins.health.port }}
+      {{- else }}
       health {{ $localDnsIp }}:{{ $v.plugins.health.port }}
+      {{- end }}
       {{- else }}
       health
       {{- end }}
