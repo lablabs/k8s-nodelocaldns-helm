@@ -2,7 +2,7 @@
 image:
   repository: registry.k8s.io/dns/k8s-dns-node-cache
   pullPolicy: IfNotPresent
-  tag: 1.22.24
+  tag: 1.23.0
   args:
     interfaceName: nodelocaldns
     healthPort: 8080
