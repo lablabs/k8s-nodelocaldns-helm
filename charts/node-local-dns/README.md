@@ -63,9 +63,8 @@ Latest available `node-local-dns` image can be found at [node-local-dns google c
 | image.args.healthPort | int | `8080` |  |
 | image.args.interfaceName | string | `"nodelocaldns"` |  |
 | image.args.quiet | bool | `false` |  |
-| image.args.setupEbtables | bool | `true` |  |
-| image.args.setupIptables | bool | `true` |  |
-| image.args.setupInterface | bool | `false` |  |
+| image.args.setupIptables | bool | `false` |  |
+| image.args.setupInterface | bool | `true` |  |
 | image.args.skipTeardown | bool | `true` |  |
 | image.args.syncInterval | string | `"1ns"` |  |
 | image.args.upstreamSvc | string | `"kube-dns"` |  |
