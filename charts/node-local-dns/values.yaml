@@ -6,11 +6,10 @@ image:
   args:
     interfaceName: nodelocaldns
     healthPort: 8080
+    setupInterface: true
     skipTeardown: true
+    setupIptables: false
     syncInterval: 1ns
-    setupIptables: true
-    setupEbtables: true
-    setupInterface: false
     quiet: false
     upstreamSvc: kube-dns
 
