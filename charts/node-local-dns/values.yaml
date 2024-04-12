@@ -21,6 +21,7 @@ config:
 #  cilium:
 #    clusterDNSService: kube-dns
 #    clusterDNSNamespace: kube-system
+#    redirectType: address
 #    udp:
 #      enabled: true
 #      portName: dns
