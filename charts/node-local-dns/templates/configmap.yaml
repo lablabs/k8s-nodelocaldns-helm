@@ -32,7 +32,7 @@ data:
         {{- end }}
       }
       {{- if $v.plugins.template }}
-      template {{ $v.plugins.template.class }} {{ $v.plugins.template.type }} {{ $v.plugins.template.zone}} {
+      template {{ $v.plugins.template.class }} {{ $v.plugins.template.type }} {{- if $v.plugins.template.zone }} {{ $v.plugins.template.zone }} {{ end }} {
         {{- if $v.plugins.template.match }}
         {{ $v.plugins.template.match }}
         {{- end }}
