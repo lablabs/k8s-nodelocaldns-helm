@@ -46,7 +46,7 @@ data:
         authority {{ $v.plugins.template.authority }}
         {{- end }}
         {{- if $v.plugins.template.rcode }}
-        rcode ${{ $v.plugins.template.rcode }}
+        rcode {{ $v.plugins.template.rcode }}
         {{- end }}
         {{- if $v.plugins.template.ederror }}
         ederror {{ $v.plugins.template.ederror }}

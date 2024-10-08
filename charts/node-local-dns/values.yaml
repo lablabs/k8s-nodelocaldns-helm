@@ -36,7 +36,7 @@ config:
         log:
           format: combined
           classes: all
-        template: {} # https://coredns.io/plugins/template/
+        template: {}                    # https://coredns.io/plugins/template/
           # parameters: "ANY AAAA"
           # match: ""
           # additional: ""
