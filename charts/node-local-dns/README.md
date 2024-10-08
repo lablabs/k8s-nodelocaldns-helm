@@ -40,6 +40,7 @@ Latest available `node-local-dns` image can be found at [node-local-dns google c
 | config.zones.".:53".plugins.log.format | string | `"combined"` |  |
 | config.zones.".:53".plugins.prometheus | bool | `true` |  |
 | config.zones.".:53".plugins.reload | bool | `true` |  |
+| config.zones.".:53".plugins.template | object | `{}` |  |
 | config.zones."in-addr.arpa:53".plugins.cache.parameters | int | `30` |  |
 | config.zones."in-addr.arpa:53".plugins.debug | bool | `false` |  |
 | config.zones."in-addr.arpa:53".plugins.errors | bool | `true` |  |

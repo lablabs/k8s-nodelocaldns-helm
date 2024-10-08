@@ -36,6 +36,14 @@ config:
         log:
           format: combined
           classes: all
+        template: {}
+          #  parameters: "ANY AAAA"
+          # match: ""
+          # additional: ""
+          # authority: ""
+          # rcode: "NOERROR"
+          # ederror: ""
+          # fallthrough: ""
         cache:
           parameters: 30
           denial: {}

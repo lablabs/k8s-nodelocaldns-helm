@@ -32,27 +32,27 @@ data:
         {{- end }}
       }
       {{- if $v.plugins.template }}
-      template {{ $v.plugins.template.class }} {{ $v.plugins.template.type }} {{- if $v.plugins.template.zone }} {{ $v.plugins.template.zone }} {{ end }} {
+      template {{ $v.plugins.template.parameters }} {
         {{- if $v.plugins.template.match }}
-        {{ $v.plugins.template.match }}
+        match {{ $v.plugins.template.match }}
         {{- end }}
         {{- if $v.plugins.template.answer }}
-        {{ $v.plugins.template.answer }}
+        answer {{ $v.plugins.template.answer }}
         {{- end }}
         {{- if $v.plugins.template.additional }}
-        {{ $v.plugins.template.additional }}
+        additional {{ $v.plugins.template.additional }}
         {{- end }}
         {{- if $v.plugins.template.authority }}
-        {{ $v.plugins.template.authority }}
+        authority {{ $v.plugins.template.authority }}
         {{- end }}
         {{- if $v.plugins.template.rcode }}
         rcode ${{ $v.plugins.template.rcode }}
         {{- end }}
         {{- if $v.plugins.template.ederror }}
-        {{ $v.plugins.template.ederror }}
+        ederror {{ $v.plugins.template.ederror }}
         {{- end }}
         {{- if $v.plugins.template.fallthrough }}
-        {{ $v.plugins.template.fallthrough }}
+        fallthrough {{ $v.plugins.template.fallthrough }}
         {{- end }}
       }
       {{- end }}
