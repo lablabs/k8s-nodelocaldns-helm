@@ -43,12 +43,26 @@ jobs:
 
           echo "Updating charts/node-local-dns/Chart.yaml version to ${pr_version}"
           sed -i "s/^version:.*/version: ${pr_version}/" charts/node-local-dns/Chart.yaml
-          echo "{pr_version}={$pr_version}" >> $GITHUB_OUTPUT
+          echo "pr_version=$pr_version" >> $GITHUB_ENV
+
+      - name: Check and remove existing PR release
+        run: |
+          echo "Checking release $pr_version existence in $GITHUB_REPOSITORY"
+          release_id=$( gh api -H "Accept: application/vnd.github.v3+json" /repos/$GITHUB_REPOSITORY/releases/tags/node-local-dns-$pr_version | jq -r .id )
+          if [ "$release_id" != "null" ]; then
+            echo "Release node-local-dns-$pr_version exists. Deleting..."
+            gh api -X DELETE /repos/$GITHUB_REPOSITORY/releases/$release_id
+            
+            echo "Deleting tag node-local-dns-$pr_version..."
+            gh api -X DELETE /repos/$GITHUB_REPOSITORY/git/refs/tags/node-local-dns-$pr_version
+          else
+            echo "Release $pr_version does not exist. Continuing..."
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.6.0
-        with:
-          version: $pr_version
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           
