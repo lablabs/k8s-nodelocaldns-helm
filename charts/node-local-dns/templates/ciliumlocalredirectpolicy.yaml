@@ -20,16 +20,27 @@ spec:
       - port: "53"
         name: {{ .Values.config.cilium.udp.portName | default "dns" }}
         protocol: UDP
-     {{- end }}
-     {{- if .Values.config.cilium.tcp.enabled }}
+      {{- end }}
+      {{- if .Values.config.cilium.tcp.enabled }}
       - port: "53"
         name: {{ .Values.config.cilium.tcp.portName | default "dns-tcp" }}
         protocol: TCP
-     {{- end }}
+      {{- end }}
     {{- else }}
     serviceMatcher:
       serviceName: {{ .Values.config.cilium.clusterDNSService | default "kube-dns" }}
       namespace: {{ .Values.config.cilium.clusterDNSNamespace | default "kube-system" }}
+      toPorts:
+      {{- if .Values.config.cilium.udp.enabled }}
+      - port: "53"
+        name: {{ .Values.config.cilium.udp.portName | default "dns" }}
+        protocol: UDP
+      {{- end }}
+      {{- if .Values.config.cilium.tcp.enabled }}
+      - port: "53"
+        name: {{ .Values.config.cilium.tcp.portName | default "dns-tcp" }}
+        protocol: TCP
+      {{- end }}
     {{- end }}
   redirectBackend:
     localEndpointSelector:
@@ -40,10 +51,10 @@ spec:
       - port: "53"
         name: {{ .Values.config.cilium.udp.portName | default "dns" }}
         protocol: UDP
-     {{- end }}
-     {{- if .Values.config.cilium.tcp.enabled }}
+      {{- end }}
+      {{- if .Values.config.cilium.tcp.enabled }}
       - port: "53"
         name: {{ .Values.config.cilium.tcp.portName | default "dns-tcp" }}
         protocol: TCP
-     {{- end }}
+      {{- end }}
 {{- end }}
