@@ -10,12 +10,12 @@ on:
 
 jobs:
   release:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          persist-credentials: false
 
       - name: Configure Git
         run: |
@@ -31,18 +31,18 @@ jobs:
         run: |
           helm repo add stable https://charts.helm.sh/stable
           helm repo add incubator https://charts.helm.sh/incubator
-      
+
       - name: Get version
         id: get_version
         run: |
           version=$(grep 'version: ' charts/node-local-dns/Chart.yaml | awk '{print $2}')
           branch=$GITHUB_HEAD_REF
-          
+
           pr_version="${version}-${branch}"
           echo "Defining PR version $pr_version for branch $branch"
 
           echo "Updating charts/node-local-dns/Chart.yaml version to ${pr_version}"
-          sed -i "s/^version:.*/version: ${pr_version}/" charts/node-local-dns/Chart.yaml
+          sed -i "s|^version:.*|version: ${pr_version}|" charts/node-local-dns/Chart.yaml
           echo "pr_version=$pr_version" >> $GITHUB_ENV
 
       - name: Check and remove existing PR release
@@ -52,7 +52,7 @@ jobs:
           if [ "$release_id" != "null" ]; then
             echo "Release node-local-dns-$pr_version exists. Deleting..."
             gh api -X DELETE /repos/$GITHUB_REPOSITORY/releases/$release_id
-            
+
             echo "Deleting tag node-local-dns-$pr_version..."
             gh api -X DELETE /repos/$GITHUB_REPOSITORY/git/refs/tags/node-local-dns-$pr_version
           else
@@ -65,4 +65,4 @@ jobs:
         uses: helm/chart-releaser-action@v1.6.0
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-          
+
