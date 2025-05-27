@@ -1,4 +1,3 @@
----
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
@@ -16,7 +15,6 @@ spec:
       annotations:
         prometheus.io/scrape: {{ .Values.metrics.prometheusScrape | quote }}
         prometheus.io/port: {{ .Values.metrics.port | quote }}
-        checksum/configmaps: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
         {{- if .Values.podAnnotations }}
         {{- toYaml .Values.podAnnotations | nindent 8 }}
         {{- end }}
@@ -106,8 +104,10 @@ spec:
               port: {{ default "8080" .Values.image.args.healthPort }}
             initialDelaySeconds: 60
             timeoutSeconds: 5
+          {{- with .Values.readinessProbe }}
           readinessProbe:
-            {{- toYaml .Values.readinessProbe | nindent 12 }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:

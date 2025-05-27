@@ -1,5 +1,4 @@
 {{- if hasKey .Values.config "cilium" }}
----
 apiVersion: v1
 kind: Service
 metadata:
@@ -8,10 +7,6 @@ metadata:
     {{- include "node-local-dns.labels" . | nindent 4 }}
     k8s-app: kube-dns
     kubernetes.io/name: "KubeDNSUpstream"
-  {{- with .Values.serviceAccount.annotations }}
-  annotations:
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
 spec:
   ports:
   {{- if .Values.config.cilium.udp.enabled }}

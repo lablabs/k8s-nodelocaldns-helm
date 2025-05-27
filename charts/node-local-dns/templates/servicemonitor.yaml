@@ -1,0 +1,43 @@
+{{- if .Values.servicemonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "node-local-dns.fullname" . }}
+  labels:
+    {{- include "node-local-dns.labels" . | nindent 4 }}
+    {{- if .Values.servicemonitor.promOperatorSelector }}
+    {{ toYaml .Values.servicemonitor.promOperatorSelector | nindent 4 }}
+    {{- end }}
+  {{- with .Values.servicemonitor.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace }}
+  selector:
+    matchLabels:
+      {{- include "node-local-dns.selectorLabels" . | nindent 6 }}
+  {{- with .Values.servicemonitor.jobLabel -}}
+  jobLabel: {{ . }}
+  {{- end }}
+  endpoints:
+  - port: metrics
+    {{- with .Values.servicemonitor.metricRelabelings }}
+    metricRelabelings:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+    {{- with .Values.servicemonitor.relabelings }}
+    relabelings:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+    {{- with .Values.servicemonitor.interval -}}
+    interval: {{ . }}
+    {{- end }}
+    {{- with .Values.servicemonitor.scrapeTimeout -}}
+    scrapeTimeout: {{ . }}
+    {{- end }}
+    honorLabels: {{ .Values.servicemonitor.honorLabels }}
+    honorTimestampts: {{ .Values.servicemonitor.honorTimestamps }}
+{{- end }}
