@@ -35,27 +35,30 @@ config:
         log:
           format: combined
           classes: all
-        template: {}
-        # https://coredns.io/plugins/template/
-        # parameters: "ANY AAAA"
-        # match: ""
-        # additional: ""
-        # authority: ""
-        # rcode: "NOERROR"
-        # ederror: ""
-        # fallthrough: ""
+        template:
+          {}
+          # https://coredns.io/plugins/template/
+          # parameters: "ANY AAAA"
+          # match: ""
+          # additional: ""
+          # authority: ""
+          # rcode: "NOERROR"
+          # ederror: ""
+          # fallthrough: ""
         cache:
           parameters: 30
-          denial: {}
-          # size: 0
-          # ttl: 1
-          success: {}
-          # size: 8192
-          # ttl: 30
-          prefetch: {}
-          # amount: 1
-          # duration: 10m
-          # percentage: 20%
+          denial:
+            size: 0
+            ttl: 1
+          success:
+            {}
+            # size: 8192
+            # ttl: 30
+          prefetch:
+            {}
+            # amount: 1
+            # duration: 10m
+            # percentage: 20%
           serve_stale: false
         forward:
           parameters: __PILLAR__UPSTREAM__SERVERS__ # defaults to /etc/resolv.conf
