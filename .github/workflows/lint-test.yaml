@@ -9,6 +9,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          fetch-depth: 0 # fetch all history for accurate diffing
           persist-credentials: false
 
       - name: Set up Helm
