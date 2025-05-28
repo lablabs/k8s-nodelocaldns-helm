@@ -39,5 +39,5 @@ spec:
     scrapeTimeout: {{ . }}
     {{- end }}
     honorLabels: {{ .Values.servicemonitor.honorLabels }}
-    honorTimestampts: {{ .Values.servicemonitor.honorTimestamps }}
+    honorTimestamps: {{ .Values.servicemonitor.honorTimestamps }}
 {{- end }}
