@@ -15,6 +15,7 @@ image:
 imagePullSecrets: []
 
 config:
+  forceReload: true # whether to force config reload via Pod restart on every Corefile change
   localDnsIp: 169.254.20.11
   # cilium:
   #   clusterDNSService: kube-dns
