@@ -48,8 +48,9 @@ config:
         cache:
           parameters: 30
           denial:
-            size: 0
-            ttl: 1
+            {}
+            # size: 0
+            # ttl: 1
           success:
             {}
             # size: 8192
