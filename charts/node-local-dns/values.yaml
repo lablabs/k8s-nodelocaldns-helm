@@ -119,6 +119,7 @@ updateStrategy:
 
 priorityClassName: system-node-critical
 podAnnotations: {}
+podLabels: {}
 podSecurityContext: {}
 
 securityContext:
