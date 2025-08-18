@@ -1,8 +1,7 @@
----
 image:
   repository: registry.k8s.io/dns/k8s-dns-node-cache
   pullPolicy: IfNotPresent
-  tag: 1.23.0
+  tag: 1.23.1
   args:
     interfaceName: nodelocaldns
     healthPort: 8080
@@ -16,17 +15,18 @@ image:
 imagePullSecrets: []
 
 config:
+  forceReload: true # whether to force config reload via Pod restart on every Corefile change
   localDnsIp: 169.254.20.11
-#  cilium:
-#    clusterDNSService: kube-dns
-#    clusterDNSNamespace: kube-system
-#    redirectType: address
-#    udp:
-#      enabled: true
-#      portName: dns
-#    tcp:
-#      enabled: true
-#      portName: dns-tcp
+  # cilium:
+  #   clusterDNSService: kube-dns
+  #   clusterDNSNamespace: kube-system
+  #   redirectType: address
+  #   udp:
+  #     enabled: true
+  #     portName: dns
+  #   tcp:
+  #     enabled: true
+  #     portName: dns-tcp
   zones:
     .:53:
       plugins:
@@ -36,7 +36,9 @@ config:
         log:
           format: combined
           classes: all
-        template: {}                    # https://coredns.io/plugins/template/
+        template:
+          {}
+          # https://coredns.io/plugins/template/
           # parameters: "ANY AAAA"
           # match: ""
           # additional: ""
@@ -46,37 +48,40 @@ config:
           # fallthrough: ""
         cache:
           parameters: 30
-          denial: {}
+          denial:
+            {}
             # size: 0
             # ttl: 1
-          success: {}
+          success:
+            {}
             # size: 8192
             # ttl: 30
-          prefetch: {}
+          prefetch:
+            {}
             # amount: 1
             # duration: 10m
             # percentage: 20%
           serve_stale: false
         forward:
-          parameters: __PILLAR__UPSTREAM__SERVERS__   # defaults to /etc/resolv.conf
+          parameters: __PILLAR__UPSTREAM__SERVERS__ # defaults to /etc/resolv.conf
           force_tcp: false
           prefer_udp: false
-          policy: ""    # random|round_robin|sequential
-          max_fails: ""   # 10
-          expire: ""    # 10s
-          health_check: ""    # 10s
-          except: ""    # space-separated list of domains to exclude from forwarding
+          policy: "" # random|round_robin|sequential
+          max_fails: "" # 10
+          expire: "" # 10s
+          health_check: "" # 10s
+          except: "" # space-separated list of domains to exclude from forwarding
         prometheus: true
         health:
           port: 8080
-#        hosts:
-#          entries:     # dns.hosts INLINE
-#            - ip: 10.5.0.4
-#              name: blabla.lala
-#          ttl: 3600       # in seconds, 3600 (default)
-#          no_reverse: true    # set no_reverse
-#          reload: "0s"    # 0s disable (default), use duration notation, ie, "1.5h"
-#          fallthrough: true
+          # hosts:
+          #   entries:     # dns.hosts INLINE
+          #     - ip: 10.5.0.4
+          #       name: blabla.lala
+          #   ttl: 3600       # in seconds, 3600 (default)
+          #   no_reverse: true    # set no_reverse
+          #   reload: "0s"    # 0s disable (default), use duration notation, ie, "1.5h"
+          #   fallthrough: true
     ip6.arpa:53:
       plugins:
         errors: true
@@ -88,7 +93,7 @@ config:
         cache:
           parameters: 30
         forward:
-          parameters: __PILLAR__UPSTREAM__SERVERS__   # defaults to /etc/resolv.conf
+          parameters: __PILLAR__UPSTREAM__SERVERS__ # defaults to /etc/resolv.conf
           force_tcp: false
         prometheus: true
         health:
@@ -104,27 +109,30 @@ config:
         cache:
           parameters: 30
         forward:
-          parameters: __PILLAR__UPSTREAM__SERVERS__   # defaults to /etc/resolv.conf
+          parameters: __PILLAR__UPSTREAM__SERVERS__ # defaults to /etc/resolv.conf
           force_tcp: false
         prometheus: true
         health:
           port: 8080
 
-# useHostNetwork is always false when using cilium
-useHostNetwork: true
+useHostNetwork: true # useHostNetwork is always false when using cilium
 
 updateStrategy:
   rollingUpdate:
     maxUnavailable: 10%
 
 priorityClassName: system-node-critical
+
 podAnnotations: {}
+
 podSecurityContext: {}
 
 securityContext:
-  privileged: true
+  capabilities:
+    add:
+      - NET_ADMIN
 
-readinessProbe:
+readinessProbe: {}
 
 serviceAccount:
   create: true
@@ -154,3 +162,10 @@ metrics:
 podmonitor:
   enabled: false
   metricRelabelings: []
+
+servicemonitor:
+  enabled: false
+  honorLabels: true
+  honorTimestamps: true
+  metricRelabelings: []
+  relabelings: []

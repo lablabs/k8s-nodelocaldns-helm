@@ -1,5 +1,4 @@
 {{- if hasKey .Values.config "cilium" }}
----
 apiVersion: "cilium.io/v2"
 kind: CiliumLocalRedirectPolicy
 metadata:
