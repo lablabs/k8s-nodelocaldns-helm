@@ -1,0 +1,111 @@
+---
+name: Bug report
+description: File a bug report
+title: "bug: "
+labels: bug
+
+body:
+- type: markdown
+  attributes:
+    value: >
+      **Thank you for reporting a bug!**
+
+      Verify first that your issue is not [already reported on
+      GitHub][issue search].
+
+      Also test if the latest release is affected too.
+
+- type: textarea
+  attributes:
+    label: Summary
+    description: Explain the problem briefly below.
+    placeholder: >-
+      When I try to do X with the Helm chart from the main branch on GitHub,
+      Y breaks in a way Z under the env E. Here are all the details I know
+      about this problem...
+  validations:
+    required: true
+
+- type: dropdown
+  attributes:
+    label: Issue Type
+    description: Issue type
+    options:
+    - Bug Report
+  validations:
+    required: true
+
+- type: input
+  attributes:
+    label: Chart version
+    description: Input the chart version
+    placeholder: v0.1.0
+  validations:
+    required: true
+
+- type: textarea
+  attributes:
+    label: Helm version
+    description: Paste the output of `helm version`
+    render: console
+    placeholder: |
+      $ helm version
+      version.BuildInfo{Version:"v3.10.2", GitCommit:"50f003e5ee8704ec937a756c646870227d7c8b58", GitTreeState:"clean", GoVersion:"go1.18.8"}
+  validations:
+    required: true
+
+- type: textarea
+  attributes:
+    label: Kubectl version
+    description: Paste the output of `kubectl version`
+    render: console
+    placeholder: |
+      $ kubectl version
+      ...
+  validations:
+    required: true
+
+- type: textarea
+  attributes:
+    label: Steps to reproduce
+    description: Enter details about how to reproduce the bug.
+    placeholder: |
+      1. In this environment...
+      2. With this config...
+      3. Run '...'
+      4. See error...
+  validations:
+    required: true
+
+- type: textarea
+  attributes:
+    label: Expected Results
+    description: Describe what you expected to happen.
+    placeholder: I expected X to happen because I assumed Y.
+  validations:
+    required: true
+
+- type: textarea
+  attributes:
+    label: Actual Results
+    description: |
+      Describe what actually happened.
+      Paste verbatim command output or any other details.
+    render: console
+    placeholder: Helm command output...
+  validations:
+    required: true
+
+- type: textarea
+  attributes:
+    label: Custom values or parameters?
+    description: Add any parameter used via `--set` or as a `values.yaml` customization.
+  validations:
+    required: false
+
+- type: textarea
+  attributes:
+    label: Additional information
+    description: Tell us anything else you think we should know.
+  validations:
+    required: false

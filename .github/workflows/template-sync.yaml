@@ -1,0 +1,46 @@
+name: Template sync
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *' # every day at midnight
+
+permissions: {}
+
+jobs:
+  universal-addon:
+    if: github.repository != 'lablabs/helm-chart-template'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Generate GitHub App token
+        id: template-sync-app-token
+        uses: actions/create-github-app-token@df432ceedc7162793a195dd1713ff69aefc7379e # v2.0.6
+        with:
+          app-id: ${{ secrets.LARA_TEMPLATE_SYNC_APP_ID }}
+          private-key: ${{ secrets.LARA_TEMPLATE_SYNC_APP_PRIVATE_KEY }}
+          repositories: ${{ github.event.repository.name }}
+          owner: ${{ github.repository_owner }}
+
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          token: ${{ steps.template-sync-app-token.outputs.token }} # needed for private repositories
+          persist-credentials: false
+
+      - name: Sync universal-addon template
+        uses: AndreasAugustin/actions-template-sync@8ec19a5f2721ffb81ff809aa340ddf75e6a85ea6 # v2.5.2
+        with:
+          source_gh_token: ${{ steps.template-sync-app-token.outputs.token }}
+          source_repo_path: lablabs/helm-chart-template
+          upstream_branch: main
+
+          target_gh_token: ${{ steps.template-sync-app-token.outputs.token }}
+
+          git_remote_pull_params: --allow-unrelated-histories --squash --strategy=recursive --no-tags -X theirs
+
+          pr_labels: kind/sync
+          pr_branch_name_prefix: "feat/template-sync"
+          pr_title: "feat(sync): sync template changes"
+          pr_commit_msg: "feat(sync): sync template changes"
+
+          is_pr_cleanup: true

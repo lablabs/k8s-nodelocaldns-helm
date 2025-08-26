@@ -1,7 +1,0 @@
-# Ignore env files
-.env
-.envrc
-
-# Ignore editors
-.DS_Store
-.idea/

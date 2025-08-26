@@ -1,11 +1,37 @@
 repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    # renovate: datasource=github-tags depName=pre-commit/pre-commit-hooks
+    rev: cef0300fd0fc4d2a87a85fa2093c6b283ea36f4b # v5.0.0 # pragma: allowlist secret
+    hooks:
+      - id: trailing-whitespace
+        args: ["--markdown-linebreak-ext=md"]
+      - id: check-merge-conflict
+      - id: end-of-file-fixer
+
+  - repo: https://github.com/gruntwork-io/pre-commit
+    # renovate: datasource=github-releases depName=gruntwork-io/pre-commit
+    rev: 40f924cd642f5dc98d12bd97b07f3752223553da # v0.1.30 # pragma: allowlist secret
+    hooks:
+      - id: helmlint
+
   - repo: https://github.com/norwoodj/helm-docs
-    rev: v1.11.3
+    # renovate: datasource=github-releases depName=norwoodj/helm-docs
+    rev: 37d3055fece566105cf8cff7c17b7b2355a01677 # v1.14.2 # pragma: allowlist secret
     hooks:
       - id: helm-docs
         args:
-          # Make the tool search for charts only under the `example-charts` directory
-          - --chart-search-root=charts/node-local-dns/
+          # Make the tool search for charts only under the `charts` directory
+          - --chart-search-root=charts
 
-          # The `./` makes it relative to the chart-search-root set above
-          - --template-files=./README.md.gotmpl
+  - repo: https://github.com/Yelp/detect-secrets
+    # renovate: datasource=github-releases depName=Yelp/detect-secrets
+    rev: 01886c8a910c64595c47f186ca1ffc0b77fa5458 # v1.5.0 # pragma: allowlist secret
+    hooks:
+      - id: detect-secrets
+        args: ["--baseline", ".secrets.baseline"]
+
+  - repo: https://github.com/zizmorcore/zizmor-pre-commit
+    # renovate: datasource=github-releases depName=zizmorcore/zizmor-pre-commit
+    rev: 69fa534d69454f44ddd4451b5e2da7a1c48e525b # v1.11.0 # pragma: allowlist secret
+    hooks:
+      - id: zizmor
