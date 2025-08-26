@@ -1,0 +1,4 @@
+python 3.13.7
+pre-commit 4.2.0
+helm 3.18.2
+helm-docs 1.14.2

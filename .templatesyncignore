@@ -1,0 +1,5 @@
+charts
+README.md
+.secrets.baseline
+.github/workflows/renovate.yaml
+renovate.json

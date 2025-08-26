@@ -1,0 +1,27 @@
+name: Metadata collector
+
+on:
+  workflow_call:
+    outputs:
+      charts:
+        description: "List of charts within the repository"
+        value: ${{ jobs.chart-list.outputs.charts }}
+
+permissions:
+  contents: read
+
+jobs:
+  chart-list:
+    runs-on: ubuntu-24.04
+    outputs:
+      charts: ${{ steps.charts.outputs.charts }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2 # pragma: allowlist secret
+        with:
+          persist-credentials: false
+
+      - name: Collect charts
+        id: charts
+        run: |
+          cd charts && echo "charts=$(ls -d * | jq -R -s -c 'split("\n")[:-1]')" >> "$GITHUB_OUTPUT"

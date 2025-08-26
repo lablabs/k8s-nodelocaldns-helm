@@ -1,0 +1,57 @@
+name: Cache Warmup
+
+on:
+  push:
+    branches:
+      - main # caches from the main branch are shared with all other branches and pull requests
+
+permissions: {}
+
+env:
+  # renovate: datasource=github-releases depName=asdf-vm/asdf
+  ASDF_VERSION: 0.18.0
+
+jobs:
+  pre-commit:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+
+      - name: Setup ASDF
+        uses: asdf-vm/actions/setup@1902764435ca0dd2f3388eea723a4f92a4eb8302 # v4.0.0
+        with:
+          asdf_version: ${{ env.ASDF_VERSION }}
+
+      - name: Cache ASDF
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
+        id: asdf-cache
+        with:
+          # https://github.com/asdf-vm/asdf/blob/master/.gitignore
+          path: |
+            ~/.asdf/installs
+            ~/.asdf/plugins
+            ~/.asdf/shims
+            ~/.cache/pip
+          key: ${{ runner.os }}-asdf-${{ hashFiles('.tool-versions') }}-warmup
+          restore-keys: ${{ runner.os }}-asdf-
+
+      - name: Install ASDF
+        uses: asdf-vm/actions/install@1902764435ca0dd2f3388eea723a4f92a4eb8302 # v4.0.0
+        if: ${{ steps.asdf-cache.outputs.cache-hit != 'true' }}
+        with:
+          asdf_version: ${{ env.ASDF_VERSION }}
+
+      - name: Cache pre-commit
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
+        with:
+          path: ~/.cache/pre-commit
+          key: ${{ runner.os }}-pre-commit-${{ hashFiles('.pre-commit-config.yaml') }}-warmup
+          restore-keys: ${{ runner.os }}-pre-commit-
+
+      - name: Run pre-commit
+        run: pre-commit install --install-hooks
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # required for GH API calls quota
