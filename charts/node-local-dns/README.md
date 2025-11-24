@@ -2,7 +2,7 @@
 
 NodeLocal DNS Cache helm chart
 
-![Version: 2.1.0](https://img.shields.io/badge/Version-2.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.23.0](https://img.shields.io/badge/AppVersion-1.23.0-informational?style=flat-square)
+![Version: 2.4.0](https://img.shields.io/badge/Version-2.4.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.23.1](https://img.shields.io/badge/AppVersion-1.23.1-informational?style=flat-square)
 
 [<img src="https://lablabs.io/static/ll-logo.png" width=350px>](https://lablabs.io/)
 
@@ -19,6 +19,7 @@ Latest available `node-local-dns` image can be found at [node-local-dns google c
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | affinity | object | `{}` |  |
+| commonLabels | object | `{}` | Common labels for all resources, ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/ |
 | config.localDnsIp | string | `"169.254.20.11"` |  |
 | config.zones.".:53".plugins.cache.denial | object | `{}` |  |
 | config.zones.".:53".plugins.cache.parameters | int | `30` |  |
@@ -77,6 +78,7 @@ Latest available `node-local-dns` image can be found at [node-local-dns google c
 | metrics.prometheusScrape | string | `"true"` |  |
 | nodeSelector | object | `{}` |  |
 | podAnnotations | object | `{}` |  |
+| podLabels | object | `{}` |  |
 | podSecurityContext | object | `{}` |  |
 | podmonitor.enabled | bool | `false` |  |
 | podmonitor.metricRelabelings | list | `[]` |  |

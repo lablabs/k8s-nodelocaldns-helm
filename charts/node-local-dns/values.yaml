@@ -1,4 +1,7 @@
 ---
+# -- Common labels for all resources, ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
+commonLabels: {}
+
 image:
   repository: registry.k8s.io/dns/k8s-dns-node-cache
   pullPolicy: IfNotPresent
@@ -17,16 +20,16 @@ imagePullSecrets: []
 
 config:
   localDnsIp: 169.254.20.11
-#  cilium:
-#    clusterDNSService: kube-dns
-#    clusterDNSNamespace: kube-system
-#    redirectType: address
-#    udp:
-#      enabled: true
-#      portName: dns
-#    tcp:
-#      enabled: true
-#      portName: dns-tcp
+  #  cilium:
+  #    clusterDNSService: kube-dns
+  #    clusterDNSNamespace: kube-system
+  #    redirectType: address
+  #    udp:
+  #      enabled: true
+  #      portName: dns
+  #    tcp:
+  #      enabled: true
+  #      portName: dns-tcp
   zones:
     .:53:
       plugins:
@@ -36,7 +39,7 @@ config:
         log:
           format: combined
           classes: all
-        template: {}                    # https://coredns.io/plugins/template/
+        template: {} # https://coredns.io/plugins/template/
           # parameters: "ANY AAAA"
           # match: ""
           # additional: ""
@@ -58,25 +61,25 @@ config:
             # percentage: 20%
           serve_stale: false
         forward:
-          parameters: __PILLAR__UPSTREAM__SERVERS__   # defaults to /etc/resolv.conf
+          parameters: __PILLAR__UPSTREAM__SERVERS__ # defaults to /etc/resolv.conf
           force_tcp: false
           prefer_udp: false
-          policy: ""    # random|round_robin|sequential
-          max_fails: ""   # 10
-          expire: ""    # 10s
-          health_check: ""    # 10s
-          except: ""    # space-separated list of domains to exclude from forwarding
+          policy: "" # random|round_robin|sequential
+          max_fails: "" # 10
+          expire: "" # 10s
+          health_check: "" # 10s
+          except: "" # space-separated list of domains to exclude from forwarding
         prometheus: true
         health:
           port: 8080
-#        hosts:
-#          entries:     # dns.hosts INLINE
-#            - ip: 10.5.0.4
-#              name: blabla.lala
-#          ttl: 3600       # in seconds, 3600 (default)
-#          no_reverse: true    # set no_reverse
-#          reload: "0s"    # 0s disable (default), use duration notation, ie, "1.5h"
-#          fallthrough: true
+    #        hosts:
+    #          entries:     # dns.hosts INLINE
+    #            - ip: 10.5.0.4
+    #              name: blabla.lala
+    #          ttl: 3600       # in seconds, 3600 (default)
+    #          no_reverse: true    # set no_reverse
+    #          reload: "0s"    # 0s disable (default), use duration notation, ie, "1.5h"
+    #          fallthrough: true
     ip6.arpa:53:
       plugins:
         errors: true
@@ -88,7 +91,7 @@ config:
         cache:
           parameters: 30
         forward:
-          parameters: __PILLAR__UPSTREAM__SERVERS__   # defaults to /etc/resolv.conf
+          parameters: __PILLAR__UPSTREAM__SERVERS__ # defaults to /etc/resolv.conf
           force_tcp: false
         prometheus: true
         health:
@@ -104,7 +107,7 @@ config:
         cache:
           parameters: 30
         forward:
-          parameters: __PILLAR__UPSTREAM__SERVERS__   # defaults to /etc/resolv.conf
+          parameters: __PILLAR__UPSTREAM__SERVERS__ # defaults to /etc/resolv.conf
           force_tcp: false
         prometheus: true
         health:
@@ -119,6 +122,7 @@ updateStrategy:
 
 priorityClassName: system-node-critical
 podAnnotations: {}
+podLabels: {}
 podSecurityContext: {}
 
 securityContext:
