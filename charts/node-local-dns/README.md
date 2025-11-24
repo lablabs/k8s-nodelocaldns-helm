@@ -19,7 +19,7 @@ Latest available `node-local-dns` image can be found at [node-local-dns google c
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | affinity | object | `{}` |  |
-| commonLabels | object | `{}` | Common labels for all resources, ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/ |
+| commonLabels | object | `{}` |  |
 | config.localDnsIp | string | `"169.254.20.11"` |  |
 | config.zones.".:53".plugins.cache.denial | object | `{}` |  |
 | config.zones.".:53".plugins.cache.parameters | int | `30` |  |
