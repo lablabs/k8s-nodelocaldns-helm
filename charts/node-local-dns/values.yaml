@@ -1,4 +1,6 @@
 ---
+commonLabels: {}
+
 image:
   repository: registry.k8s.io/dns/k8s-dns-node-cache
   pullPolicy: IfNotPresent
@@ -119,6 +121,7 @@ updateStrategy:
 
 priorityClassName: system-node-critical
 podAnnotations: {}
+podLabels: {}
 podSecurityContext: {}
 
 securityContext:
