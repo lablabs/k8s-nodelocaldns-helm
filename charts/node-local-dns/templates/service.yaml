@@ -27,5 +27,5 @@ spec:
     targetPort: 53
   {{- end }}
   selector:
-    k8s-app: kube-dns
+    {{- toYaml .Values.config.cilium.serviceSelector | nindent 4 }}
 {{- end }}

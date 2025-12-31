@@ -29,6 +29,8 @@ config:
 #    tcp:
 #      enabled: true
 #      portName: dns-tcp
+#    serviceSelector:
+#      k8s-app: kube-dns
   zones:
     .:53:
       plugins:
