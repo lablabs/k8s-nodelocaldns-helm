@@ -109,7 +109,7 @@ data:
         expire {{ $v.plugins.forward.expire }}
       {{- end }}
       {{- if $v.plugins.forward.health_check }}
-        expire {{ $v.plugins.forward.health_check }}
+        health_check {{ $v.plugins.forward.health_check }}
       {{- end }}
       {{- if $v.plugins.forward.except }}
         except {{ $v.plugins.forward.except }}
