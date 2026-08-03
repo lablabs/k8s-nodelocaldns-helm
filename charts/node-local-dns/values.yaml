@@ -58,6 +58,12 @@ config:
             # amount: 1
             # duration: 10m
             # percentage: 20%
+          # Serve an expired answer when no upstream can be reached, instead of
+          # failing the query. Set to true for CoreDNS' defaults, or to a map to
+          # tune them. Note that an empty map is falsy in Helm and disables it.
+          #   serve_stale:
+          #     duration: 10m            # how long a stale answer stays usable, CoreDNS defaults to 1h
+          #     refresh_mode: immediate  # immediate|verify, CoreDNS defaults to immediate
           serve_stale: false
         forward:
           parameters: __PILLAR__UPSTREAM__SERVERS__   # defaults to /etc/resolv.conf
