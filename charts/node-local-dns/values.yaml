@@ -64,6 +64,9 @@ config:
           #   serve_stale:
           #     duration: 10m            # how long a stale answer stays usable, CoreDNS defaults to 1h
           #     refresh_mode: immediate  # immediate|verify, CoreDNS defaults to immediate
+          #                              #   immediate: reply from the expired entry, refresh after
+          #                              #   verify: ask upstream first, fall back to the expired entry
+          #     verify_timeout: 1s       # how long verify waits before giving up, verify mode only
           serve_stale: false
         forward:
           parameters: __PILLAR__UPSTREAM__SERVERS__   # defaults to /etc/resolv.conf

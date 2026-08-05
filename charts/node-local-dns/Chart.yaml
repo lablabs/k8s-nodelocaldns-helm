@@ -20,6 +20,7 @@ engine: gotpl
 type: application
 annotations:
   artifacthub.io/changes: |
+    - Support the VERIFY_TIMEOUT argument of cache.serve_stale
     - Fix cache.serve_stale never being read, the template tested cache.server_stale
     - Support duration and refresh_mode for cache.serve_stale
     - Fix forward.health_check being rendered as expire, which disabled upstream health checking

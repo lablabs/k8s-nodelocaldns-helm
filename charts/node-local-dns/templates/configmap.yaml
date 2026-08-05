@@ -29,7 +29,7 @@ data:
         {{- end }}
         {{- if $v.plugins.cache.serve_stale }}
         {{- $serveStale := ternary $v.plugins.cache.serve_stale dict (kindIs "map" $v.plugins.cache.serve_stale) }}
-        serve_stale {{ $serveStale.duration | default "1h" }} {{ $serveStale.refresh_mode | default "immediate" }}
+        serve_stale {{ $serveStale.duration | default "1h" }} {{ $serveStale.refresh_mode | default "immediate" }}{{ with $serveStale.verify_timeout }} {{ . }}{{ end }}
         {{- end }}
       }
       {{- if $v.plugins.template }}
