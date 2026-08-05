@@ -27,8 +27,9 @@ data:
         {{- if $v.plugins.cache.prefetch }}
         prefetch {{ $v.plugins.cache.prefetch.amount }} {{ if $v.plugins.cache.prefetch.duration }} {{ $v.plugins.cache.prefetch.duration }} {{ end }} {{ if $v.plugins.cache.prefetch.percentage }} {{ $v.plugins.cache.prefetch.percentage }} {{ end }}
         {{- end }}
-        {{- if $v.plugins.cache.server_stale }}
-        serve_stale
+        {{- if $v.plugins.cache.serve_stale }}
+        {{- $serveStale := ternary $v.plugins.cache.serve_stale dict (kindIs "map" $v.plugins.cache.serve_stale) }}
+        serve_stale {{ $serveStale.duration | default "1h" }} {{ $serveStale.refresh_mode | default "immediate" }}{{ with $serveStale.verify_timeout }} {{ . }}{{ end }}
         {{- end }}
       }
       {{- if $v.plugins.template }}
@@ -109,7 +110,7 @@ data:
         expire {{ $v.plugins.forward.expire }}
       {{- end }}
       {{- if $v.plugins.forward.health_check }}
-        expire {{ $v.plugins.forward.health_check }}
+        health_check {{ $v.plugins.forward.health_check }}
       {{- end }}
       {{- if $v.plugins.forward.except }}
         except {{ $v.plugins.forward.except }}
